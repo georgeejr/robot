@@ -6,69 +6,109 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      facing: ["NORTH","SOUTH","WEST","EAST"],
-      currentPos: { x: 0, y: 0, z: ''},
+      facing: ["NORTH","EAST","SOUTH","WEST"],
+      currentPos: { x: 0, y: 0, f: 'NORTH'},
       isError: false
     }
   }
   componentDidMount() {
     // this._validation(0,4,"SOUTH")
   }
-  _handlePlace = () => {
-
+  _handlePlace = (value) => {
+    const {currentPos} = this.state
+    let newPlace
+    let newPosition = {...currentPos}
+    if (value.includes('PLACE')) {
+        newPlace = value.split(' ').pop()
+        newPlace = newPlace.split(',')
+        if (newPlace.length === 3) {
+            newPosition.x = parseInt(newPlace[0].trim())
+            newPosition.y = parseInt(newPlace[1].trim())
+            newPosition.f = newPlace[2].trim()
+            console.log(newPosition)
+            this._validation(newPosition)
+        }
+    }
   }
   _handleMove = () => {
-
+    const {currentPos} = this.state
+    let newPosition = {...currentPos}
+    switch (currentPos.f) {
+      case 'NORTH':
+        newPosition.y = currentPos.y + 1
+        break;
+      case 'EAST':
+        newPosition.x = currentPos.x + 1
+        break;
+      case 'SOUTH':
+        newPosition.y = currentPos.y - 1
+        break;
+      case 'WEST':
+        newPosition.x = currentPos.x - 1
+        console.log(newPosition)
+        break;
+      default:
+    }
+    this._validation(newPosition)
   }
-  _handleLR = () => {
-
+  _handleLR = (isRight) => {
+    const {currentPos} = this.state
+    let newFacing
+    newFacing = isRight ?
+      newFacing = this.state.facing.indexOf(currentPos.f) + 1
+      :
+      newFacing = this.state.facing.indexOf(currentPos.f) - 1
+    if (newFacing > 3) {
+      newFacing = 0;
+    } else if (newFacing < 0) {
+      newFacing = 3
+    }
+    const newPlace = {
+      x: currentPos.x,
+      y: currentPos.y,
+      f: this.state.facing[newFacing]
+    }
+    this.setState({ currentPos: newPlace })
+    console.log(newFacing)
   }
   _handleREPORT = () => {
-    console.log(this.state.isError)
+
   }
   _handleChange = (e) => {
-    if(e.keyCode == 13){
+    if(e.keyCode === 13){
       const value = e.target.value.toUpperCase()
-      let newPlace
-      if (value.includes('PLACE')) {
-          newPlace = value.split(' ').pop()
-          newPlace = newPlace.split(',')
-          if (newPlace.length === 3) {
-              const x = parseInt(newPlace[0].trim())
-              const y = parseInt(newPlace[1].trim())
-              const f = newPlace[2].trim()
-              console.log(x,y,f)
-              this._validation(x,y,f)
-          }
-      }
+      this._handlePlace(value)
       switch (value) {
         case 'REPORT':
           console.log('REPORT')
+          this._handleREPORT()
           break;
         case 'MOVE':
           console.log('MOVE')
+          this._handleMove()
           break;
         case 'LEFT':
           console.log('LEFT')
+          this._handleLR(false)
           break;
         case 'RIGHT':
           console.log('RIGHT')
+          this._handleLR(true)
           break;
         default:
-
       }
     }
   }
-  _validation =(x,y,f) => {
-    const newPlace = {x,y,f}
-    console.log(newPlace)
-    const checkF = this.state.facing.includes(f)
-    if (y > 4 || x > 4 || !checkF) {
+  _validation = (position) => {
+    const newPosition = position
+    console.log(newPosition)
+    const checkF = this.state.facing.includes(newPosition.f)
+    if (newPosition.y > 4 || newPosition.x > 4 || newPosition.yield < 0 || newPosition.x < 0 || !checkF) {
       this.setState({
         isError: true
-      },this._handleREPORT)
+      })
     } else {
-      this.setState({ currentPos : newPlace})
+      this.setState({ currentPos : newPosition})
     }
   }
   render() {
