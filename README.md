@@ -26,3 +26,15 @@ Output the X,Y and F of the robot. This can be in any form,
 #### Notes:
 There is a default place which is 0,0,NORTH  
 The REPORT function was binded into on enter event of input box.
+
+
+## How to Install
+Clone the project. In the project directory, you can run:
+### `yarn install`
+Install all dependencies
+
+### `yarn start`
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+### `yarn test`
+Launches the test runner in the interactive watch mode.<br>
