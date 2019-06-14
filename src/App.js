@@ -1,26 +1,38 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {Component} from 'react';
+class App extends Component {
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  state = {
+    f: '',
+    x: 0,
+    y: 0,
+
+  }
+  render() {
+    return (
+      <div className="App" style={styles.container}>
+        <h4>Commands Available:</h4>
+        <p>PLACE X,Y,F (F = NORTH, SOUTH, EAST or WEST)<br/>MOVE<br/>LEFT<br/>RIGHT<br/>REPORT</p>
+        <input type="text" name="" onClick="" style={styles.input} />
+      </div>
+    )
+  }
 }
+
+
+const styles = {
+  container: {
+    maxWidth: 900,
+    paddingTop: 40,
+    width: '100%'
+  },
+  input: {
+    padding: '3px',
+    width: 300,
+    height: 32,
+    fontSize: 18,
+    textTransform: 'uppercase'
+  }
+}
+
 
 export default App;
