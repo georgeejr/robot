@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Output from './components/Output'
+import Description from './components/Description'
 
 class App extends Component {
 
@@ -10,9 +11,6 @@ class App extends Component {
       currentPos: { x: 0, y: 0, f: 'NORTH'},
       isError: false
     }
-  }
-  componentDidMount() {
-    // this._validation(0,4,"SOUTH")
   }
   _handlePlace = (value) => {
     const {currentPos} = this.state
@@ -45,7 +43,6 @@ class App extends Component {
         break;
       case 'WEST':
         newPosition.x = currentPos.x - 1
-        console.log(newPosition)
         break;
       default:
     }
@@ -54,10 +51,8 @@ class App extends Component {
   _handleLR = (isRight) => {
     const {currentPos} = this.state
     let newFacing
-    newFacing = isRight ?
-      newFacing = this.state.facing.indexOf(currentPos.f) + 1
-      :
-      newFacing = this.state.facing.indexOf(currentPos.f) - 1
+    newFacing = isRight ? newFacing = this.state.facing.indexOf(currentPos.f) + 1
+      : newFacing = this.state.facing.indexOf(currentPos.f) - 1
     if (newFacing > 3) {
       newFacing = 0;
     } else if (newFacing < 0) {
@@ -72,7 +67,7 @@ class App extends Component {
     console.log(newFacing)
   }
   _handleREPORT = () => {
-
+    this.setState({ currentPos: {...this.state.currentPos} })
   }
   _handleChange = (e) => {
     if(e.keyCode === 13){
@@ -101,24 +96,32 @@ class App extends Component {
   }
   _validation = (position) => {
     const newPosition = position
-    console.log(newPosition)
     const checkF = this.state.facing.includes(newPosition.f)
-    if (newPosition.y > 4 || newPosition.x > 4 || newPosition.yield < 0 || newPosition.x < 0 || !checkF) {
-      this.setState({
-        isError: true
-      })
+    if (newPosition.y > 4 || newPosition.x > 4 || newPosition.y < 0 || newPosition.x < 0 || !checkF) {
+      this.setState({ isError: true })
     } else {
       this.setState({ currentPos : newPosition})
     }
   }
+  _onReset = (e) => {
+    console.log(e)
+    this.refs.input.value = ''
+    const currentPos = { x: 0, y: 0, f: 'NORTH'}
+    this.setState({currentPos, isError: false})
+    console.log(this.state.currentPos)
+  }
   render() {
     return (
       <div className="App" style={styles.container}>
-        <h3 style={{marginBottom: 10}}>Available commands:</h3>
-        <p>PLACE X,Y,F (F = NORTH, SOUTH, EAST or WEST)<br/>MOVE<br/>LEFT<br/>RIGHT<br/>REPORT</p>
-        <input type="text" name="" onKeyDown={this._handleChange} style={styles.input} placeholder="PLACE 0,0,NORTH" />
-        <Output position={this.state.currentPos} isErr={this.state.isError}/>
-        <a style={styles.readme} href="https://github.com/georgeejr/robot" target="_blank">see readme</a>
+        <div style={styles.wrapper}>
+          <input type="text" ref="input" onKeyDown={this._handleChange} style={styles.input} placeholder="PLACE 0,0,NORTH" />
+          <Output
+            position={this.state.currentPos}
+            isErr={this.state.isError}
+            onReset={this._onReset}
+          />
+        </div>
+        <Description />
       </div>
     )
   }
@@ -128,23 +131,27 @@ class App extends Component {
 const styles = {
   container: {
     maxWidth: 900,
-    paddingTop: 40,
+    paddingTop: 0,
     width: '100%',
     position: 'relative'
+  },
+  wrapper: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    marginTop: 60
   },
   input: {
     padding: '3px',
     width: 300,
-    height: 32,
-    fontSize: 18,
+    height: 40,
+    fontSize: 20,
+    padding: '0 10px',
     textTransform: 'uppercase',
-    margin: '20px 0 20px 0'
-  },
-  readme: {
-    position: 'absolute',
-    right: 0,
-    top: 5,
-    fontSize: 14
+    margin: '20px 0 20px 0',
+    border: '1px solid #9e9e9e',
+    color: '#212121'
   }
 }
 
