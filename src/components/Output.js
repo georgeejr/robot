@@ -11,7 +11,7 @@ const Output = (props) => {
         { props.isErr ?
         <p>Invalid format of command or Out of range!</p>
         :
-        <p>
+        <p style={styles.output}>
           <strong>{x}</strong>,
           <strong>{y}</strong>,
           <strong>{f}</strong>
@@ -21,6 +21,11 @@ const Output = (props) => {
     )
 }
 
+const styles = {
+  output: {
+    fontSize: 34
+  }
+}
 
 
 

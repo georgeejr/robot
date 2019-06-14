@@ -22,3 +22,7 @@ It will rotate the robot 90 degrees in the specified direction without changing 
 Output the X,Y and F of the robot. This can be in any form,
 
 ##### Any move that would cause the robot to fall must be ignored.
+
+#### Notes:
+There is a default place which is 0,0,NORTH  
+The REPORT function was binded into on enter event of input box.

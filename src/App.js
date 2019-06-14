@@ -114,10 +114,11 @@ class App extends Component {
   render() {
     return (
       <div className="App" style={styles.container}>
-        <h3>Commands Available:</h3>
+        <h3 style={{marginBottom: 10}}>Available commands:</h3>
         <p>PLACE X,Y,F (F = NORTH, SOUTH, EAST or WEST)<br/>MOVE<br/>LEFT<br/>RIGHT<br/>REPORT</p>
-        <input type="text" name="" onKeyDown={this._handleChange} style={styles.input} />
+        <input type="text" name="" onKeyDown={this._handleChange} style={styles.input} placeholder="PLACE 0,0,NORTH" />
         <Output position={this.state.currentPos} isErr={this.state.isError}/>
+        <a style={styles.readme} href="https://github.com/georgeejr/robot" target="_blank">see readme</a>
       </div>
     )
   }
@@ -128,14 +129,22 @@ const styles = {
   container: {
     maxWidth: 900,
     paddingTop: 40,
-    width: '100%'
+    width: '100%',
+    position: 'relative'
   },
   input: {
     padding: '3px',
     width: 300,
     height: 32,
     fontSize: 18,
-    textTransform: 'uppercase'
+    textTransform: 'uppercase',
+    margin: '20px 0 20px 0'
+  },
+  readme: {
+    position: 'absolute',
+    right: 0,
+    top: 5,
+    fontSize: 14
   }
 }
 
