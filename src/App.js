@@ -12,7 +12,7 @@ class App extends Component {
     }
   }
   componentDidMount() {
-    this._validation(0,4,"SOUTH")
+    // this._validation(0,4,"SOUTH")
   }
   _handlePlace = () => {
 
@@ -26,15 +26,49 @@ class App extends Component {
   _handleREPORT = () => {
     console.log(this.state.isError)
   }
+  _handleChange = (e) => {
+    if(e.keyCode == 13){
+      const value = e.target.value.toUpperCase()
+      let newPlace
+      if (value.includes('PLACE')) {
+          newPlace = value.split(' ').pop()
+          newPlace = newPlace.split(',')
+          if (newPlace.length === 3) {
+              const x = parseInt(newPlace[0].trim())
+              const y = parseInt(newPlace[1].trim())
+              const f = newPlace[2].trim()
+              console.log(x,y,f)
+              this._validation(x,y,f)
+          }
+      }
+      switch (value) {
+        case 'REPORT':
+          console.log('REPORT')
+          break;
+        case 'MOVE':
+          console.log('MOVE')
+          break;
+        case 'LEFT':
+          console.log('LEFT')
+          break;
+        case 'RIGHT':
+          console.log('RIGHT')
+          break;
+        default:
+
+      }
+    }
+  }
   _validation =(x,y,f) => {
-    const newPos = {x,y,f}
+    const newPlace = {x,y,f}
+    console.log(newPlace)
     const checkF = this.state.facing.includes(f)
     if (y > 4 || x > 4 || !checkF) {
       this.setState({
         isError: true
       },this._handleREPORT)
     } else {
-      this.setState({ currentPos : newPos})
+      this.setState({ currentPos : newPlace})
     }
   }
   render() {
@@ -42,7 +76,7 @@ class App extends Component {
       <div className="App" style={styles.container}>
         <h3>Commands Available:</h3>
         <p>PLACE X,Y,F (F = NORTH, SOUTH, EAST or WEST)<br/>MOVE<br/>LEFT<br/>RIGHT<br/>REPORT</p>
-        <input type="text" name="" onClick="" style={styles.input} />
+        <input type="text" name="" onKeyDown={this._handleChange} style={styles.input} />
         <Output position={this.state.currentPos} isErr={this.state.isError}/>
       </div>
     )
